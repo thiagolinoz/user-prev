@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,13 +25,16 @@ public class PersonResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addPerson(User user) {
 		users.put(user.getId(), user);
-
+		
 		return "The person " + user + " was created";
 	}
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String updatePerson(User user) {
+		if (user.getId() == null) {
+			throw new IllegalArgumentException("Invalid ID supplied");
+		}
 		users.put(user.getId(), user);
 		
 		return "The person " + user + " was updated";
@@ -46,13 +50,19 @@ public class PersonResource {
 	@Path("/{personId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findPersonById(@PathParam("personId") int personId) {
-		return users.get(personId).toString();		
+		if (users.get(personId) == null) {
+			throw new NotFoundException("Person not found"); 
+		}
+		return users.get(personId).toString();
 	}
 	
 	@DELETE
 	@Path("/{personId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deletePerson(@PathParam("personId") int personId) {
+		if (users.get(personId) == null) {
+			throw new NotFoundException("Person not found"); 
+		}
 		users.remove(personId);
 		
 		return users.toString();
