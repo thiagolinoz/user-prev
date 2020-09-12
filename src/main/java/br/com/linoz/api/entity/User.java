@@ -55,7 +55,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-			return getName() +" of document "+ getDocument() +" who lives at "+ getAddress();
+		return getName() +" of document "+ getDocument() +" who lives at "+ getAddress();
 	}
 
 }
