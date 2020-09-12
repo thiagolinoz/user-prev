@@ -24,6 +24,9 @@ public class PersonResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addPerson(User user) {
+		if (users.containsKey(user.getId())) {
+			throw new IllegalArgumentException("ID already exist");
+		}
 		users.put(user.getId(), user);
 		
 		return "The person " + user + " was created";
