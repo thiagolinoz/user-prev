@@ -2,7 +2,7 @@ package br.com.linoz.api.entity;
 
 public class User {
 
-	private int id;
+	private Integer id;
 	private String name;
 	private String document;
 	private String address;
@@ -14,14 +14,14 @@ public class User {
 		
 	}
 	
-	public User(int id, String name, String document, String address) {
+	public User(Integer id, String name, String document, String address) {
 		this.id = id;
 		this.name = name;
 		this.document = document;
 		this.address = address;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -37,7 +37,7 @@ public class User {
 		this.address = address;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
