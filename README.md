@@ -25,3 +25,7 @@ Json format example to POST(create) and PUT(update):
 The documentation was wrote with swagger editor and can be find:
 
  - https://github.com/thiagolinoz/user-prev/blob/master/src/main/resources/META-INF/resources/swagger-user-prev1-0.yaml
+
+> If you want run this application on your local, after the repository cloned run:
+
+`mvn compile quarkus:dev`
