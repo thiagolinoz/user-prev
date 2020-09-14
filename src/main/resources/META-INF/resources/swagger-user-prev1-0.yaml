@@ -1,0 +1,157 @@
+swagger: "2.0"
+info:
+  description: "This an API to create users -  Users Prev"
+  version: "1.0.0"
+  title: "Users Prev"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "thiagolinoz@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "host.swagger.io"
+basePath: "/v2"
+tags:
+- name: "Users Prev"
+  description: "An API to create users"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "user"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our API"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+paths:
+  /person:
+    post:
+      tags:
+      - "person"
+      summary: "Add a new person to the Prev"
+      description: ""
+      operationId: "addPerson"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Person object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation"
+        "500":
+          description: "ID already exist"
+    put:
+      tags:
+      - "person"
+      summary: "Update an existing person"
+      description: ""
+      operationId: "updatePerson"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Person object to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation"
+        "500":
+          description: "Invalid ID supplied"
+    get:
+      tags:
+      - "person"
+      summary: "Finds all Person created"
+      description: "All created person in the API"
+      operationId: "findAllPerson"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+  /person/{personId}:
+    get:
+      tags:
+      - "person"
+      summary: "Finds Person by Id"
+      description: ""
+      operationId: "findPersonById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "personId"
+        in: "path"
+        description: "Id of person to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        "404":
+          description: "Person not found"
+    delete:
+      tags:
+      - "person"
+      summary: "Deletes a person"
+      description: ""
+      operationId: "deletePerson"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "personId"
+        in: "path"
+        description: "Person id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"      
+        "404":
+          description: "Person not found"
+definitions:
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        document:
+          type: "string"
+        address:
+          type: "string"
+        #role:
+        #  type: "string"
+        #  description: "User role in api"
+        #  enum: 
+        #  - "admin"
+        #  - "person"
+  
