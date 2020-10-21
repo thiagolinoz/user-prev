@@ -23,6 +23,8 @@ public class AuthResource {
 	
 	@Inject
 	PBKDF2Encoder passwordEncoder;
+	@Inject
+	TokenUtils tokenGenerator;
 	
 	@ConfigProperty(name = "br.com.linoz.user-prev.jwt.duration") public Long duration;
 	@ConfigProperty(name = "mp.jwt.verify.issuer") public String issuer;
@@ -34,12 +36,12 @@ public class AuthResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(AuthRequest authRequest) {
 		User u = User.findByUserName(authRequest.getUsername());
-
 		if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
 			try {
-				return Response.ok(new AuthResponse(TokenUtils.generateToken(
+				return Response.ok(new AuthResponse(tokenGenerator.generateToken(
 						u.getUsername(), u.getRoles(), duration, issuer))).build();
 			} catch (Exception exception) {
+				LOG.error(exception.getMessage());
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} 

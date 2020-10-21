@@ -8,13 +8,16 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import br.com.linoz.api.entity.Role;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 
+@ApplicationScoped
 public class TokenUtils {
 	
-	public static String generateToken(String username, Set<Role> roles, Long duration, String issuer) 
+	public String generateToken(String username, Set<Role> roles, Long duration, String issuer) 
 			throws Exception {
 				String privateKeyLocation = "/privatekey.pem";
 				PrivateKey privateKey = readPrivateKey(privateKeyLocation);
@@ -34,7 +37,7 @@ public class TokenUtils {
 				return claimsBuilder.jws().signatureKeyId(privateKeyLocation).sign(privateKey);
 	}
 
-	public static PrivateKey readPrivateKey(final String pemResName) throws Exception {
+	private PrivateKey readPrivateKey(final String pemResName) throws Exception {
 		try(InputStream contentIS = TokenUtils.class.getResourceAsStream(pemResName)) {
 			byte[] tmp = new byte[4096];
 			int length = contentIS.read(tmp);
@@ -42,7 +45,7 @@ public class TokenUtils {
 		}
 	}
 
-	public static PrivateKey decodePrivateKey(final String pemEncoded) throws Exception {
+	private PrivateKey decodePrivateKey(final String pemEncoded) throws Exception {
 		byte[] encodedBytes = toEncodedBytes(pemEncoded);
 		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encodedBytes);
 		KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -50,12 +53,12 @@ public class TokenUtils {
 		return kf.generatePrivate(keySpec);
 	}
 
-	public static byte[] toEncodedBytes(String pemEncoded) {
+	private byte[] toEncodedBytes(String pemEncoded) {
 		final String normalizePem = removeBeginEnd(pemEncoded);
 		return Base64.getDecoder().decode(normalizePem);
 	}
 
-	public static String removeBeginEnd(String pem) {
+	private String removeBeginEnd(String pem) {
 		pem = pem.replaceAll("-----BEGIN (.*)-----", "");
 		pem = pem.replaceAll("-----END (.*)----", "");
 		pem = pem.replaceAll("\r\n", "");
@@ -63,7 +66,7 @@ public class TokenUtils {
 		return pem.trim();
 	}
 
-	public static int currentTimeInsSecs() {
+	private int currentTimeInsSecs() {
 		long currentTimeMS = System.currentTimeMillis();
 		return (int) (currentTimeMS / 1000);
 	}
